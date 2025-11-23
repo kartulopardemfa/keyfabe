@@ -29,6 +29,7 @@
   </script>
     <style>
     ::selection { background: #ff4719; color: white; }
+    html { scroll-behavior: smooth; }
     .card:hover .stamp { opacity: 1; transform: translate(0,0) rotate(-6deg); }
     .card:hover .scanlines { opacity: 0.12; }
     .card:hover .art { transform: translateY(-4px) scale(1.02); }
@@ -106,9 +107,15 @@
       50% { transform: translate(-4px, 2px); }
       100% { transform: translate(3px, -3px); }
     }
+    #back-to-top {
+      position: fixed;
+      right: 1.5rem;
+      bottom: 1.5rem;
+      z-index: 60;
+    }
   </style>
 </head>
-<body class="bg-paper text-ink font-sans">
+<body class="bg-paper text-ink font-sans" id="top">
   <div class="max-w-7xl mx-auto px-6 md:px-12 py-12">
     <header class="flex items-center justify-between gap-4 mb-10">
       <div class="text-2xl font-bold lowercase tracking-tight">keyfabe</div>
@@ -117,18 +124,20 @@
       </a>
     </header>
 
-    <div class="mb-6">
-      <div class="inline-block relative">
-        <span class="absolute text-cyan-bright -translate-x-1 -translate-y-1">designs</span>
-        <span class="absolute text-orange-bright translate-x-1 translate-y-1">designs</span>
-        <h1 class="relative text-4xl md:text-6xl font-bold uppercase">designs</h1>
+    <div class="mb-8 flex items-start justify-between gap-4 flex-wrap">
+      <div class="relative inline-block px-4 py-3 border-2 border-ink shadow-[6px_6px_0px_#1a1a1a] bg-white">
+        <h1 class="relative text-4xl md:text-6xl font-bold uppercase leading-tight">design index</h1>
+        <p class="font-mono text-xs mt-2 uppercase" data-tagline>prints from channels that never aired</p>
       </div>
-      <p class="font-mono text-sm mt-3">catalog: error-corrected · all current prints</p>
+      <span class="font-mono text-sm bg-black text-white px-3 py-1 rounded" data-collection-label>loading…</span>
     </div>
 
     <div id="design-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
     <div id="channel-flash"></div>
     <audio id="pop-sound" src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQgAAAAA//8AAP//AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA" preload="auto"></audio>
+    <a id="back-to-top" href="#top" class="border-2 border-ink bg-white text-ink px-3 py-2 font-mono text-xs uppercase shadow-[4px_4px_0px_#1a1a1a] hover:-translate-y-0.5 hover:-translate-x-0.5 transition">
+      back to top
+    </a>
     <div id="lightbox" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-40 opacity-0 pointer-events-none transition duration-300">
       <div id="lightbox-inner" class="relative bg-paper border-2 border-ink shadow-[8px_8px_0px_#000] p-4 translate-y-6 transition duration-300 max-w-4xl w-[90vw]">
         <button id="close-lightbox" data-text="back to simulation" class="glitch-btn absolute top-3 right-3 font-mono text-xs uppercase border-2 border-ink px-2 py-1 bg-white shadow-[3px_3px_0px_#1a1a1a]">back to simulation</button>
@@ -139,44 +148,213 @@
     </div>
   </div>
   <script>
-    const arts = [
-      './public/design2.png',
-      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 360 480'%3E%3Crect width='360' height='480' fill='none'/%3E%3Crect x='92' y='72' width='176' height='320' rx='24' fill='%23f0f0e6' stroke='%231a1a1a' stroke-width='8'/%3E%3Crect x='140' y='88' width='80' height='32' rx='8' fill='%2300a8ff' stroke='%231a1a1a' stroke-width='8'/%3E%3Cpath d='M116 152h128M116 192h128M116 232h128M116 272h128M116 312h104' stroke='%231a1a1a' stroke-width='8' stroke-linecap='round'/%3E%3Crect x='136' y='332' width='88' height='36' rx='8' fill='%23ff4719' stroke='%231a1a1a' stroke-width='8'/%3E%3Cpath d='M196 132c0 6-10 10-16 10s-16-4-16-10' stroke='%231a1a1a' stroke-width='8' fill='none'/%3E%3C/svg%3E",
-      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 360 480'%3E%3Crect width='360' height='480' fill='none'/%3E%3Ccircle cx='180' cy='140' r='72' fill='%23f0f0e6' stroke='%231a1a1a' stroke-width='8'/%3E%3Cpath d='M132 212h96v56c0 24-24 40-48 40s-48-16-48-40Z' fill='%23ff4719' stroke='%231a1a1a' stroke-width='8'/%3E%3Cpath d='M152 118c0 14 18 22 28 22s28-8 28-22' stroke='%231a1a1a' stroke-width='8' fill='none'/%3E%3Ccircle cx='154' cy='130' r='8' fill='%231a1a1a'/%3E%3Ccircle cx='206' cy='130' r='8' fill='%231a1a1a'/%3E%3Cpath d='M168 256h24l12 52-24 12-24-12Z' fill='%2300a8ff' stroke='%231a1a1a' stroke-width='8'/%3E%3Crect x='96' y='342' width='168' height='20' rx='6' fill='%231a1a1a'/%3E%3Crect x='96' y='370' width='168' height='18' rx='6' fill='%2300a8ff'/%3E%3C/svg%3E"
+    document.addEventListener('DOMContentLoaded', () => {
+      const placeholder = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 360 480'%3E%3Crect width='360' height='480' fill='%23f0f0e6' stroke='%231a1a1a' stroke-width='8'/%3E%3Cpath d='M90 140h180v40H90zM90 220h180v40H90zM90 300h140v40H90z' fill='%23ff4719'/%3E%3Ctext x='50%' y='55%' text-anchor='middle' fill='%231a1a1a' font-size='22' font-family='monospace' %3Eawaiting art%3C/text%3E%3C/svg%3E";
+    const taglines = [
+      'uniforms for the sibling the main character forgot they had.',
+      'streetwear for people who stayed inside and watched the test pattern instead of going to the party.',
+      'prints for the kid who held the camera, not the one in the photo.',
+      'merch for background characters who know the scene is scripted.',
+      'clothes for timelines that kept autosaving you in the wrong slot.',
+      'apparel for when you realize the laugh track doesn’t match your life.',
+      'outfits for people who read the subtitles of reality and found typos.',
+      'graphics for the moment you realize you’re the tutorial npc.',
+      'streetwear for viewers who never changed the channel, just stared at the static.',
+      'tees for the cousin who “used to make beats” and now sees glitches in everything.',
+      'prints for people who still remember the old menu music on the dvd.',
+      'uniforms from the arcade that closed the year before you were born.',
+      'clothing for the ones the algorithm quietly flagged as “too self-aware.”',
+      'apparel for users who scrolled too far down the terms of service.',
+      'graphics stolen from the warning labels inside the simulation’s source code.',
+      'merch for people who waved back at the CCTV.',
+      'streetwear licensed by a future version of you that made worse choices.',
+      'outfits from the branch timeline where you actually replied to that message.',
+      'prints for players who chose “observe” instead of “attack” and never left the tutorial zone.',
+      'uniforms for the backup copy of your personality.',
+      'clothes for people who still dress like the loading screen never ended.',
+      'tees for the younger brother energy in every friend group.',
+      'graphics for the one who always passed the controller but learned the lore.',
+      'merch from the group chat you muted but never left.',
+      'apparel for citizens of the beta version of reality the devs forgot to shut down.',
+      'uniforms issued by the ministry of unresolved side quests.',
+      'streetwear for bystanders in someone else’s hero arc.',
+      'prints for people who keep all their boss fights in their drafts.',
+      'clothing for those who feel like an easter egg in their own story.',
+      'tees for when you realize nostalgia is just a high-res hallucination.',
+      'graphics pulled from the notification panel of an anxious universe.',
+      'merch for the ones who read about rokos basilisk and still opened the app.',
+      'apparel for people who say “it’s fine” when the sky clearly flickers.',
+      'uniforms for employees of the department of recurring intrusive thoughts.',
+      'streetwear for kids who grew up on loading screens and low battery warnings.',
+      'prints licensed from the future lawsuit your subconscious keeps predicting.',
+      'clothes from the merch table at a canceled simulation.',
+      'tees for the version of you that only exists in home videos.',
+      'graphics for people who feel watched but still wave at the invisible camera.',
+      'merch for volunteers of the “do not summon the basilisk” awareness campaign.'
+    ];
+      const arts = Array.from({ length: 99 }, (_, i) => `/design${i + 1}.png`);
+      const mockups = Array.from({ length: 99 }, (_, i) => `/mockup${i + 1}.jpg`);
+
+      const grid = document.getElementById('design-grid');
+      const cards = [];
+    const stampTexts = [
+      'fan favorite',
+      'signal boosted',
+      'limited-ish',
+      'maybe cursed',
+      'staff regret',
+      'simulation error',
+      'almost illegal',
+      'beta release',
+      'soft launch',
+      'rerun special',
+      'off-menu item',
+      'broadcast leak',
+      'flagged by hr',
+      'overtested',
+      'underreviewed',
+      'for internal use',
+      'not for tv',
+      'bg character pick',
+      'lost episode',
+      'alt timeline pick',
+      'unapproved promo',
+      'quiet bestseller',
+      'unstable drop',
+      'channel 7 special',
+      'archived glitch',
+      'redacted favorite',
+      'recalled once',
+      'bootleg official',
+      'office favorite',
+      'focus group failure',
+      'nostalgia bait',
+      'debug build',
+      'soft apocalypse',
+      'npc core',
+      'weirdly popular',
+      'too specific',
+      'for indoor kids',
+      'bad idea winner',
+      'overstimulated',
+      'ghost station pick',
+      'broken in nicely',
+      'fictional collab',
+      'parallel import',
+      'not canon',
+      'probably haunted',
+      'end of run',
+      'rerun certified',
+      'adhd classic',
+      'error code: 200-ish',
+    ];
+    const stampColors = [
+      'bg-cyan-bright text-ink',
+      'bg-orange-bright text-white',
+      'bg-white text-ink',
+      'bg-mustard text-ink',
+      'bg-ink text-white',
+      'bg-black text-white',
     ];
 
-    const grid = document.getElementById('design-grid');
-    const cards = [];
-    for (let i = 1; i <= 50; i++) {
-      const art = arts[(i - 1) % arts.length];
-      const idx = String(i).padStart(2, '0');
-      const firstHover = i === 1
-        ? `<img src="/mockup2.jpg" alt="design ${idx} hover" class="art art-hover max-h-full max-w-full object-contain p-2 transition duration-200 absolute inset-0 m-auto opacity-0" />`
-        : '';
-      const firstDefaultClass = i === 1 ? 'art art-default' : 'art';
-      cards.push(`
-        <div class="card border-2 border-ink bg-white shadow-[6px_6px_0px_#1a1a1a] transition duration-200" data-art="${art}" data-mockup="${i === 1 ? '/mockup2.jpg' : art}" data-idx="${i}">
-          <div class="relative aspect-square border-b-2 border-ink flex items-center justify-center p-6">
-            <div class="absolute inset-0 opacity-0 scanlines bg-[linear-gradient(0deg,rgba(0,0,0,0.08)_1px,transparent_1px)] bg-[length:4px_4px] transition duration-200 pointer-events-none"></div>
-            <div class="absolute top-3 right-3 px-3 py-1 font-mono text-[10px] uppercase border-2 border-ink bg-cyan-bright text-ink shadow-[4px_4px_0px_#1a1a1a] opacity-0 stamp transition duration-200 transform translate(4px, -6px) z-20 pointer-events-none">APPROVED</div>
-            <div class="w-full h-full border-2 border-dashed border-ink flex items-center justify-center relative overflow-hidden">
-              <img src="${art}" alt="design ${idx}" class="${firstDefaultClass} max-h-full max-w-full object-contain p-2 transition duration-200 relative z-10" />
-              ${firstHover ? firstHover.replace('object-cover p-0 scale-110', 'object-contain p-2') : ''}
+      for (let i = 1; i <= 99; i++) {
+        const art = arts[i - 1];
+        const mockup = mockups[i - 1] || art;
+        const idx = String(i).padStart(2, '0');
+        const hoverImg = mockup
+          ? `<img src="${mockup}" alt="design ${idx} hover" onerror="this.onerror=null; this.src='${placeholder}'" class="art art-hover max-h-full max-w-full object-contain p-2 transition duration-200 absolute inset-0 m-auto opacity-0" />`
+          : '';
+        const firstDefaultClass = 'art art-default';
+        const stampText = stampTexts[Math.floor(Math.random() * stampTexts.length)];
+        const stampColor = stampColors[Math.floor(Math.random() * stampColors.length)];
+        cards.push(`
+          <div class="card border-2 border-ink bg-white shadow-[6px_6px_0px_#1a1a1a] transition duration-200" data-art="${art}" data-mockup="${mockup}" data-idx="${i}">
+            <div class="relative aspect-square border-b-2 border-ink flex items-center justify-center p-6">
+              <div class="absolute inset-0 opacity-0 scanlines bg-[linear-gradient(0deg,rgba(0,0,0,0.08)_1px,transparent_1px)] bg-[length:4px_4px] transition duration-200 pointer-events-none"></div>
+              <div class="absolute top-3 right-3 px-3 py-1 font-mono text-[10px] uppercase border-2 border-ink shadow-[4px_4px_0px_#1a1a1a] opacity-0 stamp transition duration-200 transform translate(4px, -6px) z-20 pointer-events-none ${stampColor}">${stampText}</div>
+              <div class="w-full h-full border-2 border-dashed border-ink flex items-center justify-center relative overflow-hidden">
+                <img src="${art}" alt="design ${idx}" onerror="this.onerror=null; this.src='${placeholder}'" class="${firstDefaultClass} max-h-full max-w-full object-contain p-2 transition duration-200 relative z-10" />
+                ${hoverImg}
+              </div>
+            </div>
+            <div class="p-4 space-y-2">
+              <div class="font-mono text-[10px] uppercase tracking-[0.15em]">print ${idx}</div>
+              <h2 class="text-xl font-bold uppercase leading-tight">design ${idx}</h2>
+              <p class="font-mono text-sm text-ink/80">lorem ipsum dolor sit amet for design ${idx}.</p>
+              <div class="flex gap-2 pt-2">
+                <a href="#" class="font-mono text-xs uppercase border-2 border-ink px-3 py-2 bg-white shadow-[3px_3px_0px_#1a1a1a] hover:-translate-y-0.5 hover:-translate-x-0.5 transition">buy on etsy</a>
+                <a href="#" class="font-mono text-xs uppercase border-2 border-ink px-3 py-2 bg-cyan-bright text-ink shadow-[3px_3px_0px_#1a1a1a] hover:-translate-y-0.5 hover:-translate-x-0.5 transition">buy on shopify</a>
+              </div>
             </div>
           </div>
-          <div class="p-4 space-y-2">
-            <div class="font-mono text-[10px] uppercase tracking-[0.15em]">print ${idx}</div>
-            <h2 class="text-xl font-bold uppercase leading-tight">design ${idx}</h2>
-            <p class="font-mono text-sm text-ink/80">lorem ipsum dolor sit amet for design ${idx}.</p>
-            <div class="flex gap-2 pt-2">
-              <a href="./cart.html" class="font-mono text-xs uppercase border-2 border-ink px-3 py-2 bg-white shadow-[3px_3px_0px_#1a1a1a] hover:-translate-y-0.5 hover:-translate-x-0.5 transition">buy</a>
-              <a href="./cart.html" class="font-mono text-xs uppercase border-2 border-ink px-3 py-2 bg-cyan-bright text-ink shadow-[3px_3px_0px_#1a1a1a] hover:-translate-y-0.5 hover:-translate-x-0.5 transition">add to cart</a>
-            </div>
-          </div>
-        </div>
-      `);
-    }
-    grid.innerHTML = cards.join('');
+        `);
+      }
+      if (grid) grid.innerHTML = cards.join('');
+
+    // Set dynamic collection label
+    const collections = [
+      '1974 Broadcast Collection',
+      '1983 Late Night Capsule',
+      '1990 Static Season Drop',
+      '1992 Fall Collection',
+      '1995 Mall Ghost Edition',
+      '1997 VHS Summer Archive',
+      '1998 Beta Timeline Release',
+      '1999 Food Court Special',
+      '2001 Glitch Era Capsule',
+      '2003 Cable Box Collection',
+      '2004 Loading Screen Drop',
+      '2005 Hold Music Series',
+      '2006 Lost Channel Run',
+      '2007 Backroom Promo Line',
+      '2010 Unreleased Pilot Capsule',
+      '2011 Background Extra Edition',
+      '2012 Rerun Season Pack',
+      '2013 Test Pattern Collection',
+      '2014 Parallel Timeline Drop',
+      '2015 Simulation Error Line',
+      '2016 Unstable Signal Capsule',
+      '2017 Analog Memory Collection',
+      '2018 Off-Brand Saturday Drop',
+      '2019 Deleted Scene Series',
+      '2020 Indoor Kid Edition',
+      '2021 Infinite Scroll Capsule',
+      '2022 Soft Apocalypse Collection',
+      '2023 False Memory Drop',
+      '2024 Beta Reality Line',
+      '2025 Broadcast Glitch Capsule',
+      'Midnight Rerun Collection',
+      'Hotel Lobby Channel Drop',
+      'Arcade Carpet Edition',
+      'Public Access Capsule',
+      'After-School Static Line',
+      'VHS Tracking Error Collection',
+      'Unlicensed Mascot Drop',
+      'Regional Ad Block Edition',
+      'Unsent Message Capsule',
+      'Redacted Commercial Series',
+      'Lost Tutorial Level Collection',
+      'Background Character Drop',
+      'Unrendered NPC Edition',
+      'Minor Timeline Error Capsule',
+      'Ghost Station Broadcast Line',
+      'Mall Closing Time Collection',
+      'Unauthorized Promo Drop',
+      'Alt Universe Pilot Capsule',
+      'Cancelled Sitcom Season',
+      'Parallel Ad Break Collection',
+    ];
+
+      const labelEl = document.querySelector('[data-collection-label]');
+      if (labelEl) {
+        const pick = collections[Math.floor(Math.random() * collections.length)];
+        labelEl.textContent = pick;
+      }
+      const taglineEl = document.querySelector('[data-tagline]');
+      if (taglineEl) {
+        taglineEl.textContent = taglines[Math.floor(Math.random() * taglines.length)];
+      }
+    });
 
     // Lightbox interactions
     const lightbox = document.getElementById('lightbox');
@@ -184,6 +362,9 @@
     const lightboxImg = document.getElementById('lightbox-img');
     const closeBtn = document.getElementById('close-lightbox');
     const channelFlash = document.getElementById('channel-flash');
+    const collectionLabel = document.querySelector('[data-collection-label]');
+    const randomYear = 1970 + Math.floor(Math.random() * 40); // 1970-2009 vibe
+    if (collectionLabel) collectionLabel.textContent = `${randomYear} Fall Collection`;
 
     const body = document.body;
     const paletteClasses = ['alt-palette-1', 'alt-palette-2', 'alt-palette-3'];
