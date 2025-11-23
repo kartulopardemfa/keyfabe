@@ -52,11 +52,10 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     const [activePalette, setActivePalette] = useState<PaletteName>('Default');
 
     return (
-        <StoreContext.Provider value= {{ activePalette, setPalette: setActivePalette }
-}>
-    { children }
-    </StoreContext.Provider>
-  );
+      <StoreContext.Provider value={{ activePalette, setPalette: setActivePalette }}>
+        {children}
+      </StoreContext.Provider>
+    );
 };
 
 export const useStore = () => {

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>keyfabe | cart</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            paper: '#f0f0e6',
+            ink: '#1a1a1a',
+            'cyan-bright': '#00a8ff',
+            'orange-bright': '#ff4719',
+            mustard: '#e6b31e',
+          },
+          fontFamily: {
+            sans: ['"Space Grotesk"', 'sans-serif'],
+            mono: ['"DM Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    ::selection { background: #ff4719; color: white; }
+  </style>
+</head>
+<body class="bg-paper text-ink font-sans">
+  <div class="max-w-4xl mx-auto px-6 md:px-12 py-12 space-y-8">
+    <header class="flex items-center justify-between">
+      <div class="text-2xl font-bold lowercase tracking-tight">keyfabe</div>
+      <a href="./designs.html" class="font-mono text-xs uppercase border-2 border-ink px-3 py-2 bg-white shadow-[4px_4px_0px_#1a1a1a] hover:-translate-y-0.5 hover:-translate-x-0.5 transition">back to designs</a>
+    </header>
+
+    <div>
+      <div class="inline-block relative mb-2">
+        <span class="absolute text-cyan-bright -translate-x-1 -translate-y-1">cart</span>
+        <span class="absolute text-orange-bright translate-x-1 translate-y-1">cart</span>
+        <h1 class="relative text-4xl font-bold uppercase">cart</h1>
+      </div>
+      <p class="font-mono text-sm">nothing here yet. add a design to see it appear.</p>
+    </div>
+
+    <div class="border-2 border-ink bg-white shadow-[6px_6px_0px_#1a1a1a] p-6 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <div class="w-20 h-20 border-2 border-dashed border-ink flex items-center justify-center bg-paper">∅</div>
+        <div>
+          <p class="font-mono text-xs uppercase text-ink/70">your cart is empty</p>
+          <p class="font-mono text-sm">add a design from the gallery.</p>
+        </div>
+      </div>
+      <a href="./designs.html" class="font-mono text-xs uppercase border-2 border-ink px-3 py-2 bg-cyan-bright text-ink shadow-[3px_3px_0px_#1a1a1a] hover:-translate-y-0.5 hover:-translate-x-0.5 transition">browse designs</a>
+    </div>
+  </div>
+</body>
+</html>

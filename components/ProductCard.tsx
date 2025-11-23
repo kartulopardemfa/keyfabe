@@ -10,6 +10,7 @@ interface ProductCardProps {
   warning?: string;
   art?: string;
   colorBg?: string;
+  icon?: string;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ 
@@ -19,7 +20,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
   price = "SOLD OUT", 
   warning, 
   art, 
-  colorBg = 'bg-white' 
+  colorBg = 'bg-white',
+  icon
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -53,6 +55,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         {/* Art/Content */}
         <div className="absolute inset-0 flex items-center justify-center p-8">
            {art && <img src={art} alt={name} className="w-full h-full object-contain drop-shadow-[4px_4px_0px_rgba(0,0,0,0.1)]" />}
+           {icon && !art && <div className="text-6xl filter drop-shadow-[4px_4px_0px_rgba(0,0,0,0.2)]">{icon}</div>}
         </div>
         
         {/* Badge */}

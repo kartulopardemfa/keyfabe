@@ -1,10 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ThreeScene from './components/ThreeScene';
 import Grain from './components/Grain';
 import MisprintText from './components/MisprintText';
-import Drops from './components/Drops';
 import { StoreProvider, useStore, PALETTES } from './store';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -32,6 +31,7 @@ const AppContent: React.FC = () => {
   const manifestoRef = useRef<HTMLElement>(null);
   const { activePalette } = useStore();
   const currentTheme = PALETTES[activePalette];
+  const [redacted, setRedacted] = useState(true);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -115,41 +115,60 @@ const AppContent: React.FC = () => {
         <div className={`py-4 border-y-2 border-ink rotate-1 scale-105 z-20 relative overflow-hidden transition-colors duration-300 ${currentTheme.accent} text-white`}>
           <div className="flex whitespace-nowrap" style={{ animation: 'marquee 20s linear infinite' }}>
             <span className="font-mono text-lg font-bold uppercase tracking-widest mx-4">
-              • do not look directly at the mascot • happiness is mandatory • keyfabe loves you • guaranteed side effects include joy • do not look directly at the mascot • happiness is mandatory • keyfabe loves you • guaranteed side effects include joy •
+              • streetwear from a parallel ad break. like channel-surfing a universe that remembers you a little too well. • streetwear from a parallel ad break. like channel-surfing a universe that remembers you a little too well. •
             </span>
             <span className="font-mono text-lg font-bold uppercase tracking-widest mx-4">
-              • do not look directly at the mascot • happiness is mandatory • keyfabe loves you • guaranteed side effects include joy • do not look directly at the mascot • happiness is mandatory • keyfabe loves you • guaranteed side effects include joy •
+              • streetwear from a parallel ad break. like channel-surfing a universe that remembers you a little too well. • streetwear from a parallel ad break. like channel-surfing a universe that remembers you a little too well. •
             </span>
           </div>
         </div>
 
         {/* Manifesto Section */}
-        <section id="manifesto" ref={manifestoRef} className="py-32 px-6 md:px-12 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+        <section id="manifesto" ref={manifestoRef} className="py-28 px-6 md:px-12 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
           <div className="space-y-8">
-            <MisprintText text="manifesto" as="h2" className="text-5xl font-bold reveal-text" />
+            <MisprintText text="who the fuck are keyfabe anyway?" as="h2" className="text-4xl md:text-5xl font-bold reveal-text" />
             <p className="text-2xl leading-relaxed font-serif italic reveal-text">
-              fake ads. real cotton. every piece looks like a commercial break you half-remember.
+              streetwear from the wrong channel break. optimism with a side of dread.
             </p>
             <div className="space-y-6 font-mono text-sm md:text-base reveal-text">
               <p>
-                one mascot. one joke that goes a little too far. 3–5 inks and out. no lore, no drop anxiety, just sharp print mistakes on purpose.
+                we make garments for the simulation. bright commercial joy with a dark secret. mascots that grin too wide.
               </p>
               <p>
-                if it feels like propaganda for a problem that isn&apos;t real, good. if you feel seen, report to your nearest exit.
+                every drop is a fake ad you half-remember. a shadow pointing the wrong way. a reflection that doesn&apos;t match.
               </p>
-              <ul className="space-y-2 list-disc list-inside">
-                <li>mid-century optimism</li>
-                <li>scheduled dissociation</li>
-                <li>retail therapy for unreality</li>
-              </ul>
+              <p className="font-semibold">
+                wear the{' '}
+                <span
+                  onMouseEnter={() => setRedacted(false)}
+                  onMouseLeave={() => setRedacted(true)}
+                  className="bg-black text-black cursor-help transition-colors duration-200 hover:text-white hover:bg-cyan-bright px-1"
+                >
+                  {redacted ? '████████' : 'glitch'}
+                </span>
+                .
+              </p>
+              <p className="font-mono text-xs pt-4 border-t-2 border-orange-bright">
+                fig 4.2: acknowledging the artificial nature of your environment is the first step toward brand loyalty.
+              </p>
             </div>
           </div>
-          <div className={`relative h-full min-h-[400px] border-2 border-ink p-8 flex items-center justify-center rotate-2 shadow-[12px_12px_0px_#1a1a1a] reveal-text transition-colors duration-300 ${currentTheme.background === 'bg-neutral-900' ? 'bg-neutral-800' : 'bg-neutral-100'}`}>
+          <div className={`relative h-full min-h-[420px] border-2 border-ink p-8 flex items-center justify-center rotate-2 shadow-[12px_12px_0px_#1a1a1a] reveal-text transition-colors duration-300 ${currentTheme.background === 'bg-neutral-900' ? 'bg-neutral-800' : 'bg-neutral-100'}`}>
             <div className="text-center space-y-3">
-              <div className="text-8xl mb-2">📡</div>
-              <h3 className="text-2xl font-bold uppercase">fake ad tile</h3>
-              <p className="font-mono text-sm max-w-xs mx-auto">broadcast quality, mildly cursed. void where prohibited by linear time.</p>
+              <div className="text-8xl mb-2">?</div>
+              <h3 className="text-2xl font-bold uppercase">truth decoder</h3>
+              <p className="font-mono text-sm max-w-xs mx-auto">model: kf-200 · output: nonsense · status: redacted</p>
             </div>
+            <span className="absolute top-6 right-6 font-mono text-[10px] bg-cyan-bright px-2 py-1 border border-ink rounded-full">
+              fig 004
+            </span>
+            <div
+              className="absolute inset-2 opacity-20 mix-blend-multiply pointer-events-none"
+              style={{
+                backgroundImage:
+                  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E\")",
+              }}
+            />
           </div>
         </section>
 
@@ -157,12 +176,12 @@ const AppContent: React.FC = () => {
         {/* Designs Section */}
         <section id="designs" className={`py-24 px-6 md:px-12 border-t-2 border-ink relative z-20 transition-colors duration-300 ${currentTheme.background}`}>
           <div className="max-w-7xl mx-auto">
-            <div className="mb-16 flex items-end justify-between flex-wrap gap-4">
+            <div className="mb-12 flex items-end justify-between flex-wrap gap-4">
               <MisprintText text="designs" as="h2" className="text-5xl md:text-7xl font-bold" />
               <div className="flex items-center gap-3">
                 <span className="font-mono text-sm border-2 border-ink px-3 py-1 bg-white shadow-[4px_4px_0px_#1a1a1a] text-black">catalog: error-corrected</span>
                 <a
-                  href="/designs"
+                  href="./designs.html"
                   className="font-mono text-xs uppercase border-2 border-ink bg-white text-black px-4 py-2 font-bold shadow-[4px_4px_0px_#1a1a1a] hover:-translate-y-0.5 hover:-translate-x-0.5 hover:shadow-[6px_6px_0px_#1a1a1a] transition-all active:translate-x-0 active:translate-y-0 active:shadow-[2px_2px_0px_#1a1a1a]"
                 >
                   view all
@@ -170,7 +189,26 @@ const AppContent: React.FC = () => {
               </div>
             </div>
 
-            <Drops designs={designs} />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {designs.map((design, index) => (
+                <div key={design.name} className="border-2 border-ink bg-white shadow-[6px_6px_0px_#1a1a1a] transition hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[10px_10px_0px_#1a1a1a]">
+                  <div className="aspect-square border-b-2 border-ink flex items-center justify-center p-6">
+                    <div className="w-full h-full border-2 border-dashed border-ink flex items-center justify-center bg-white">
+                      <img
+                        src={design.art}
+                        alt={design.name}
+                        className="max-h-full max-w-full object-contain p-4"
+                      />
+                    </div>
+                  </div>
+                  <div className="p-4 space-y-2">
+                    <div className="font-mono text-[10px] uppercase tracking-[0.15em]">print {String(index + 1).padStart(2, '0')}</div>
+                    <h3 className="text-xl font-bold uppercase leading-tight">{design.name}</h3>
+                    <p className="font-mono text-sm leading-snug text-ink/80">{design.line}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
