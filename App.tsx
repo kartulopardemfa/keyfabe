@@ -63,6 +63,19 @@ const AppContent: React.FC = () => {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
         }
+        @keyframes spin-stamp {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        .spin-stamp {
+          animation: spin-stamp 14s linear infinite;
+        }
+        .redacted {
+          background: #1a1a1a;
+          color: #1a1a1a;
+          padding: 0 4px;
+          letter-spacing: 0.12em;
+        }
       `}</style>
 
       {/* Navigation */}
@@ -124,20 +137,125 @@ const AppContent: React.FC = () => {
         </div>
 
         {/* Manifesto Section */}
-        <section id="manifesto" ref={manifestoRef} className="py-28 px-6 md:px-12 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+        <section
+          id="manifesto"
+          ref={manifestoRef}
+          className="py-32 px-6 md:px-12 bg-[#f0f0e6] relative z-10 border-b-2 border-black overflow-hidden"
+        >
+          <div
+            className="absolute inset-0 opacity-10 pointer-events-none"
+            style={{
+              backgroundImage:
+                'linear-gradient(#1a1a1a 1px, transparent 1px), linear-gradient(90deg, #1a1a1a 1px, transparent 1px)',
+              backgroundSize: '40px 40px',
+            }}
+          />
+
+          <div className="max-w-7xl mx-auto relative">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+              <div className="lg:col-span-5 sticky top-32">
+                <h2 className="text-6xl md:text-8xl font-bold tracking-tighter leading-[0.85] mb-8 uppercase mix-blend-difference text-[#1a1a1a]">
+                  We make
+                  <br />
+                  <span className="text-[#00a8ff]">the lies</span>
+                  <br />
+                  you want
+                  <br />
+                  to believe.
+                </h2>
+                <div className="w-24 h-2 bg-[#ff4719] mb-8" />
+                <p className="font-mono text-sm uppercase tracking-widest opacity-60">
+                  Doc Ref: KF-2025-C
+                  <br />
+                  Subject: Fabricated Reality
+                </p>
+
+                <div className="mt-12 relative w-40 h-40 hidden md:block">
+                  <svg className="spin-stamp w-full h-full text-[#ff4719]" viewBox="0 0 100 100">
+                    <path id="curve" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="transparent" />
+                    <text width="100">
+                      <textPath xlinkHref="#curve" className="font-mono font-bold text-[13px] uppercase fill-current" startOffset="0">
+                        • Certified Fabricated Reality • keyfabe studios •
+                      </textPath>
+                    </text>
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center font-black text-2xl uppercase -rotate-12 text-[#1a1a1a]">
+                    Fake
+                  </div>
+                </div>
+              </div>
+
+              <div className="lg:col-span-7 bg-white border-2 border-black p-8 md:p-16 shadow-[12px_12px_0px_#1a1a1a] relative reveal-text">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-32 h-8 bg-[#e5e5e5] border-2 border-black rounded-full z-20" />
+
+                <h3 className="font-mono text-xl font-bold mb-8 border-b-2 border-black pb-4">INTERNAL MEMO: PUBLIC RELEASE</h3>
+
+                <div className="prose prose-lg font-mono text-[#1a1a1a] leading-relaxed max-w-none">
+                  <p className="mb-6">
+                    At keyfabe studios, we understand that reality is often <span className="redacted">disappointing</span>. That&apos;s why we developed proprietary <strong>Vibe-Shift Technology™</strong>.
+                  </p>
+
+                  <p className="mb-6">
+                    Our mascots are mathematically designed to trigger nostalgia for <span className="redacted">memories</span> you never had. Our products are 99% <span className="redacted">concept</span> and 1% cotton.
+                  </p>
+
+                  <div className="bg-[#f0f0e6] p-6 border border-black mt-8">
+                    <h4 className="font-bold uppercase mb-4 text-sm">Key Deliverables:</h4>
+                    <ul className="space-y-3">
+                      <li className="flex items-center gap-3">
+                        <div className="w-4 h-4 bg-[#ff4719] rounded-full" />
+                        <span className="font-bold">Mid-Century Optimism</span>
+                      </li>
+                      <li className="flex items-center gap-3">
+                        <div className="w-4 h-4 bg-[#e6b31e] rounded-full" />
+                        <span className="font-bold">Scheduled Dissociation</span>
+                      </li>
+                      <li className="flex items-center gap-3">
+                        <div className="w-4 h-4 bg-[#00a8ff] rounded-full" />
+                        <span className="font-bold">Tax-Deductible Joy</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="mt-12 flex justify-between items-end">
+                  <div className="text-3xl text-[#00a8ff] -rotate-6 font-bold italic">The Management</div>
+                  <div className="text-xs font-mono text-right opacity-60">
+                    APPROVED BY:
+                    <br />
+                    DEPT. OF ILLUSIONS
+                  </div>
+                </div>
+
+                <div
+                  className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none mix-blend-multiply"
+                  style={{
+                    backgroundImage:
+                      "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E\")",
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Legacy Philosophy / Who section */}
+        <section id="philosophy" className="py-28 px-6 md:px-12 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
           <div className="space-y-8">
-            <MisprintText text="who the fuck are keyfabe anyway?" as="h2" className="text-4xl md:text-5xl font-bold reveal-text" />
-            <p className="text-2xl leading-relaxed font-serif italic reveal-text">
+            <h2 className="text-4xl md:text-5xl font-bold reveal-text uppercase leading-tight">
+              who the <span className="redacted">fuck</span> are keyfabe anyway?
+            </h2>
+            <p className="text-2xl leading-relaxed font-serif italic reveal-text bg-white border-2 border-ink shadow-[6px_6px_0px_#1a1a1a] px-4 py-3">
               streetwear from the wrong channel break. optimism with a side of dread.
             </p>
-            <div className="space-y-6 font-mono text-sm md:text-base reveal-text">
-              <p>
+            <div className="space-y-4 font-mono text-sm md:text-base reveal-text bg-white border-2 border-ink shadow-[6px_6px_0px_#1a1a1a] p-5">
+              <p className="bg-neutral-100 border border-ink px-3 py-2 shadow-[4px_4px_0px_#1a1a1a]">
                 we make garments for the simulation. bright commercial joy with a dark secret. mascots that grin too wide.
               </p>
-              <p>
+              <p className="bg-neutral-100 border border-ink px-3 py-2 shadow-[4px_4px_0px_#1a1a1a]">
                 every drop is a fake ad you half-remember. a shadow pointing the wrong way. a reflection that doesn&apos;t match.
               </p>
-              <p className="font-semibold">
+              <p className="font-semibold bg-neutral-100 border border-ink px-3 py-2 shadow-[4px_4px_0px_#1a1a1a]">
                 wear the{' '}
                 <span
                   onMouseEnter={() => setRedacted(false)}
