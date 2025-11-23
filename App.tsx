@@ -456,7 +456,7 @@ const AppContent: React.FC = () => {
             <div className="mb-12 flex items-end justify-between flex-wrap gap-4">
               <MisprintText text="designs" as="h2" className="text-5xl md:text-7xl font-bold" />
               <a
-                href="./designs.html"
+                href="/designs.html"
                 className="font-mono text-sm uppercase border-2 border-ink bg-white text-black px-6 py-3 font-bold shadow-[6px_6px_0px_#1a1a1a] hover:-translate-y-0.5 hover:-translate-x-0.5 hover:shadow-[8px_8px_0px_#1a1a1a] transition-all active:translate-x-0 active:translate-y-0 active:shadow-[3px_3px_0px_#1a1a1a]"
               >
                 view all designs
